@@ -6,17 +6,37 @@ import { PdfService } from "./pdf";
 @Service()
 export class PdfConsumer {
     private _kafkaConsumer: KafkaConsumer = Container.get(KafkaConsumer);
+    private _kafkaProducer: KafkaProducer = Container.get(KafkaProducer);
     private _pdfService: PdfService = Container.get(PdfService);
 
     async start() {
         // 메시지 구독
         await this._kafkaConsumer.connect();
         await this._kafkaConsumer.subscribe("my-topic");
+        console.log("1");
         await this._kafkaConsumer.run(async (message: string) => {
             await this._pdfService.toPDF(message, {
                 format: "A4",
             });
-            console.log("PDF 변환 작업이 완료되었습니다.");
+
+            console.log("PDF 생성 완료");
+
+            setTimeout(async () => {
+                console.log("2");
+                await this._kafkaProducer.connect();
+                console.log("3");
+                await this._kafkaProducer.send({
+                    topic: "my-topic-done",
+                    messages: [
+                        {
+                            value: "PDF 생성 완료 [메시징]",
+                        },
+                    ],
+                });
+                console.log("4");
+                await this._kafkaProducer.disconnect();
+                await this._kafkaConsumer.disconnect();
+            }, 0);
         });
     }
 }

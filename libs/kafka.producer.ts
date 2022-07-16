@@ -19,4 +19,8 @@ export class KafkaProducer {
     async send(record: ProducerRecord) {
         await this.producer.send(record);
     }
+
+    async disconnect() {
+        await this.producer.disconnect();
+    }
 }

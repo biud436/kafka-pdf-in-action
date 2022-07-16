@@ -8,12 +8,14 @@ export class KafkaConsumer {
 
     private consumer: Consumer = this.service.client.consumer({
         groupId: "my-group",
+        heartbeatInterval: 1000,
     });
 
     async connect() {
         try {
             await this.consumer.connect();
         } catch (e: any) {
+            await this.consumer.disconnect();
             throw new Error(e);
         }
     }
@@ -21,7 +23,12 @@ export class KafkaConsumer {
     async subscribe(topic: string) {
         await this.consumer.subscribe({
             topics: [topic],
+            fromBeginning: true,
         });
+    }
+
+    async disconnect() {
+        await this.consumer.disconnect();
     }
 
     async run(cb: (...args: any[]) => void) {
