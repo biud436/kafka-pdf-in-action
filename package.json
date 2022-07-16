@@ -1,0 +1,25 @@
+{
+    "name": "kafka-pdf-in-action",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start:consumer": "yarn ts-node src/conusemer.ts",
+        "start:producer": "yarn ts-node src/producer.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@types/html-pdf": "^3.0.0",
+        "@types/node": "^18.0.5",
+        "html-pdf": "^3.0.1",
+        "kafkajs": "^2.1.0",
+        "redis": "^4.2.0",
+        "reflect-metadata": "^0.1.13",
+        "ts-node": "^10.9.1",
+        "tsc": "^2.0.4",
+        "typedi": "^0.10.0",
+        "typescript": "^4.7.4"
+    }
+}
