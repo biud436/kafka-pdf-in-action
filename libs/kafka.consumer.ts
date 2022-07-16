@@ -20,7 +20,7 @@ export class KafkaConsumer {
 
     async subscribe(topic: string) {
         await this.consumer.subscribe({
-            topics: ["my-topic"],
+            topics: [topic],
         });
     }
 

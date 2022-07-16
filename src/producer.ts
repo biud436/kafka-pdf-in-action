@@ -1,4 +1,5 @@
 import Container, { Service } from "typedi";
+import { KafkaConsumer } from "../libs/kafka.consumer";
 import { KafkaProducer } from "../libs/kafka.producer";
 import { PdfService } from "./pdf";
 
@@ -7,9 +8,8 @@ export class ProducerApplication {
     private _kafkaProducer: KafkaProducer = Container.get(KafkaProducer);
 
     async start() {
-        console.log("프로듀서를 실행합니다.");
         await this._kafkaProducer.connect();
-        this._kafkaProducer.send({
+        await this._kafkaProducer.send({
             topic: "my-topic",
             messages: [
                 {
