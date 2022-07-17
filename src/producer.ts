@@ -31,21 +31,11 @@ export class ProducerApplication {
             ],
         });
         await this._kafkaProducer.disconnect();
-
-        console.log("1");
-
         await this._kafkaConsumer.connect();
-
-        console.log("2");
         await this._kafkaConsumer.subscribe("my-topic-done");
-
-        console.log("3");
         await this._kafkaConsumer.run(async (message: string) => {
             console.log(message);
         });
-
-        console.log("4");
-
         await this._kafkaConsumer.disconnect();
     }
 }

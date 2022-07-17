@@ -22,9 +22,7 @@ export class PdfConsumer {
             console.log("PDF 생성 완료");
 
             setTimeout(async () => {
-                console.log("2");
                 await this._kafkaProducer.connect();
-                console.log("3");
                 await this._kafkaProducer.send({
                     topic: "my-topic-done",
                     messages: [
@@ -33,7 +31,6 @@ export class PdfConsumer {
                         },
                     ],
                 });
-                console.log("4");
                 await this._kafkaProducer.disconnect();
                 await this._kafkaConsumer.disconnect();
             }, 0);
