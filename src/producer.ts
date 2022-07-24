@@ -1,12 +1,14 @@
 import Container, { Service } from "typedi";
 import { KafkaConsumer } from "../libs/kafka.consumer";
 import { KafkaProducer } from "../libs/kafka.producer";
+import { MyLogger } from "./logger";
 import { PdfService } from "./pdf";
 
 @Service()
 export class ProducerApplication {
     private _kafkaConsumer: KafkaConsumer = Container.get(KafkaConsumer);
     private _kafkaProducer: KafkaProducer = Container.get(KafkaProducer);
+    private _logger: MyLogger = Container.get(MyLogger);
 
     async start() {
         await this._kafkaProducer.connect();
@@ -34,7 +36,7 @@ export class ProducerApplication {
         await this._kafkaConsumer.connect();
         await this._kafkaConsumer.subscribe("my-topic-done");
         await this._kafkaConsumer.run(async (message: string) => {
-            console.log(message);
+            this._logger.log(message);
         });
         await this._kafkaConsumer.disconnect();
     }
